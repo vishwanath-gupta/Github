@@ -1,6 +1,92 @@
-welcome to github collabration project.
-this line is added in feature1 branch
-this line is added in the main branch
+B2: Create and configure Jenkins files for workflow and build of an application
+and push the image on docker hub..
+Step 1: Build Docker Image from Your Folder
+
+cd your-folder-name
+Build the image: docker build -t imagename .
+
+Step 2: Add a Tag:
+docker tag imagename yourdockerhubusername/imagename:tagname
+eg: docker tag myapp akshatha123/myapp:v1
+
+Step 3: Login to Docker Hub
+Step 4: Push Image to Docker Hub
+docker push yourdockerhubusername/imagename:tagname
+eg: docker push akshatha123/myapp:v1
+
+Step 5: Verify on Docker Hub
+Step 6: Push the code to Github
+
+git init
+git add .
+git commit -m "Initial commit"
+
+git remote add origin https://github.com/your-
+username/docker_demo.git
+
+git push -u origin main
+
+Step 7: Add Docker Hub Credentials in Jenkins
+
+Open Jenkins
+Manage Jenkins → Credentials → Configure Credentials
+Add:
+Kind: Username & Password
+ID: dockerhub-creds
+Username: your Docker Hub username
+Password: Docker Hub Access Token
+How to Check Docker Access Token
+
+DevOps Lab Cheat Sheet
+
+Prof. Akshatha M, VVCE
+
+Step 1: Open Security Settings
+Login to Docker Hub
+Click your profile (top right)
+Go to:
+Account Settings → Security
+Open Access Tokens
+
+In command prompt:
+echo YOUR_TOKEN | docker login -u your-username --password-stdin
+
+Step 8: Create Jenkins Pipeline Job
+Jenkins Dashboard → New Item
+Select Pipeline
+Configure:
+Pipeline → Pipeline script from SCM
+SCM → Git
+Repo URL → your GitHub repo
+Script Path → Jenkinsfile
+
+Step 9: Build Now (manual)
+
+
+
+
+
+
+Docker Automation using Webhook
+Start by creating a new empty repository
+Step 1: Required Background Services (One-Time Setup)
+Jenkins
+http://localhost:8080
+Docker Desktop
+Must be running in background
+ngrok
+ngrok http 8080
+Step 2: Set up the Webhook
+Step 3: Jenkins Job Config
+
+GitHub hook trigger for GITScm polling
+
+Step 4: Push the code to GitHub
+Jenkins should automatically build, else check the plugins
+
+DevOps Lab Cheat Sheet
+
+Prof. Akshatha M, VVCE
 
 
 
@@ -14,14 +100,76 @@ this line is added in the main branch
 
 
 
+C1. Create a maven projects with all dependencies required for the application
+in CI/CD pipeline.
+To run CI/CD pipeline in GitHub
+I. Install required tools
+II. Install Java (JDK 11 or higher)
+o Download from Oracle JDK or OpenJDK
+o Set environment variable:
+▪ JAVA_HOME = C:\Program Files\Java\jdk-XX
+▪ Add %JAVA_HOME%\bin to PATH
 
+III. Install Apache Maven
+o Download and extract
+o Set:
+▪ MAVEN_HOME = C:\apache-maven
+▪ Add %MAVEN_HOME%\bin to PATH
 
+IV. Install Visual Studio Code
+V. Install VS Code Extensions:
+o Extension Pack for Java
+o Maven for Java
+o Debugger for Java
+II. Create Maven Project in VS Code
 
+Open VS Code
+Press Ctrl + Shift + P
+Type: Java: Create Java Project
+Select Maven create from archetype
+Choose:
+Archetype → maven-archetype-quickstart
+Enter details:
+Group Id: com.example
+Artifact Id: demo (Give any name)
+Choose folder → Project will be created automatically
 
+Push the folder to git repository
+III. For CI/CD Pipeline (GitHub Actions)
 
+In the local folder
+Create a folder by name .github and inside that create worflows folder
 
+and in that create a file maven.yml
 
+Structure:
+Localfoldername
+-demo
+-.github/workflows/maven.yml
 
+Push this to Github repo
 
+IV. Check the actions tab in github for the CI working
 
+DevOps Lab Cheat Sheet
 
+Prof. Akshatha M, VVCE
+maven.yml
+name: Java CI/CD Pipeline
+on:
+push:
+branches: [ "main" ]
+jobs:
+build:
+runs-on: windows-latest
+env:
+FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+steps:
+- uses: actions/checkout@v4
+- uses: actions/setup-java@v4
+with:
+distribution: 'temurin'
+java-version: '11'
+- name: Build using Maven
+run: mvn clean install
+working-directory: demo
